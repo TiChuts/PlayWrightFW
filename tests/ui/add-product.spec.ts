@@ -1,5 +1,5 @@
-import test, { expect } from "@core/fixtures/all.fixture";
-import accounts from "../resources/accounts.json";
+import { test, expect } from "./hook";
+import accounts from "../../test-data/accounts.json";
 
 const account = accounts[0];
 

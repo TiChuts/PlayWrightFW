@@ -66,6 +66,13 @@ class APIClient {
     });
   }
 
+  async patch(endPoint, body) {
+    return await this.context.patch(endPoint, {
+      headers: this.headers,
+      data: body,
+    });
+  }
+
   async put(endPoint, body) {
     return await this.context.put(endPoint, {
       headers: this.headers,

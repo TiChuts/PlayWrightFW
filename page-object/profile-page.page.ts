@@ -56,27 +56,38 @@ export class ProfilePage extends BasePage {
     );
   }
 
-  async restoreProfileViaApi(fullName: string) {
-    const result = await this.page.evaluate(async (name) => {
-      const response = await fetch(
-        "https://testing.platformforge.dev/profile",
-        {
-          method: "PATCH",
-          credentials: "include",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({ fullName: name }),
-        },
-      );
+  async restoreProfileViaApi() {
+    const { APIClient } = await import("../core/api/api-client");
+    const { API_DEMO_QA_ENDPOINTS } = await import("../constant/endpoints");
 
-      return {
-        ok: response.ok,
-        status: response.status,
-        text: await response.text(),
-      };
-    }, fullName);
+    const client = await new APIClient(API_DEMO_QA_ENDPOINTS.BASE_URL).init();
+    const loginResponse = await client.post(API_DEMO_QA_ENDPOINTS.LOGIN, {
+      username: "admin",
+      password: "password123",
+    });
 
-    expect(result.ok).toBeTruthy();
+    if (!loginResponse.ok()) {
+      const errorText = await loginResponse.text();
+      throw new Error(`Profile cleanup login failed: ${errorText}`);
+    }
+
+    const loginData = await loginResponse.json();
+    const token = `Bearer ${loginData.token}`;
+
+    client.headers = {
+      Authorization: token,
+      "Content-Type": "application/json",
+    };
+
+    const patchResponse = await client.patch(API_DEMO_QA_ENDPOINTS.PROFILE, {
+      name: "admin",
+    });
+
+    if (!patchResponse.ok()) {
+      const errorText = await patchResponse.text();
+      throw new Error(`Profile cleanup failed: ${errorText}`);
+    }
+
+    return patchResponse;
   }
 }

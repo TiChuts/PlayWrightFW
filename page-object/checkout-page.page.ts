@@ -6,9 +6,7 @@ export class CheckoutPage extends BasePage {
     super(page);
   }
 
-  readonly checkoutTitle = this.page.getByRole("heading", {
-    name: /Thanh toán|Checkout/i,
-  });
+  readonly checkoutTitle = this.page.locator("h1.checkout-title");
 
   readonly backToCartButton = this.page.getByRole("button", {
     name: /Quay lại giỏ hàng|Back to cart/i,

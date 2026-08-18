@@ -1,6 +1,6 @@
-import test, { expect } from "@core/fixtures/all.fixture";
-import accounts from "../resources/accounts.json";
-import customerInfo from "../resources/information.json";
+import { test, expect } from "./hook";
+import accounts from "../../test-data/accounts.json";
+import customerInfo from "../../test-data/information.json";
 
 const account = accounts[0];
 
@@ -14,7 +14,7 @@ test("Add product to cart and continue to checkout", async ({
   const productName = "Đồng hồ thời trang";
   const expectedQuantity = 1;
   const expectedUnitPrice = "899.000";
-  const expectedPaymentMethod = "Cash on Delivery";
+  const expectedPaymentMethod = "Tiền mặt khi nhận hàng";
   const expectedTotalPrice = "899.000đ";
 
   await loginPage.openUrl("/login");
