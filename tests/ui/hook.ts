@@ -10,13 +10,6 @@ test.beforeAll(async () => {
   test.setTimeout(60000);
 });
 
-test.beforeEach("Open start URL", async ({ page, basePage, loginService }) => {
-  console.log(`Running ${test.info().title}`);
-
-  await basePage.goToBookPage();
-  DataStorage.initData();
-});
-
 test.afterEach("After test - Clean Storage", async ({ page }) => {
   console.log(
     `Finished ${test.info().title} with status ${test.info().status}`,

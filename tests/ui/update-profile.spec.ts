@@ -1,5 +1,5 @@
-import test, { expect } from "@core/fixtures/all.fixture";
-import accounts from "../resources/accounts.json";
+import { test, expect } from "./hook";
+import accounts from "../../test-data/accounts.json";
 
 const account = accounts[0];
 const updatedFullName = "Real John Doe";
@@ -31,7 +31,13 @@ test("Update profile data and restore original data via API", async ({
   await expect(page).toHaveURL(/\/home/);
   await profilePage.verifyUpdatedNameOnHomePage(updatedFullName);
 
-  await profilePage.restoreProfileViaApi(originalFullName);
-  await page.goto("/profile");
-  await expect(profilePage.fullNameInput).toHaveValue(originalFullName);
+  await profilePage.restoreProfileViaApi();
+
+  await loginPage.logout();
+  await loginPage.doLogin(account.username, account.password);
+  await expect(page).toHaveURL(/\/home/);
+
+  await homePage.clickOnHeaderUsername();
+  await expect(page).toHaveURL(/\/profile/);
+  await expect(profilePage.fullNameInput).toHaveValue("admin");
 });

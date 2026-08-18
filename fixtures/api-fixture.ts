@@ -1,11 +1,11 @@
 import { test } from "@playwright/test";
 import { APIClient } from "../core/api/api-client";
-import { BookService } from "../service/book-service";
+import { ProfileService } from "../service/profile-service";
 import { API_DEMO_QA_ENDPOINTS } from "../constant/endpoints";
 import { LoginService } from "../service/login-service";
 
 export type APIFixtureType = {
-  bookService: BookService;
+  profileService: ProfileService;
   loginService: LoginService;
 };
 
@@ -22,10 +22,10 @@ export const apiFixture: ExtendParams[0] = {
     },
     { scope: "test" },
   ],
-  bookService: [
+  profileService: [
     async ({}, use) => {
       await use(
-        new BookService(
+        new ProfileService(
           await new APIClient(API_DEMO_QA_ENDPOINTS.BASE_URL).init(),
         ),
       );

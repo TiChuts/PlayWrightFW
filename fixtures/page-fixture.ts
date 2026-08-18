@@ -1,29 +1,39 @@
 import { test } from "@playwright/test";
-import { LoginPage } from "../page-object/login-page";
-import { BasePage } from "../page-object/base-page";
-import { BookPage } from "../page-object/book-page";
-import { ProfilePage } from "../page-object/profile-page";
+import { LoginPage } from "../page-object/login-page.page";
+import { BasePage } from "../page-object/base.page";
+import { ProfilePage } from "../page-object/profile-page.page";
+import { HomePage } from "../page-object/home-page.page";
+import { CartPage } from "../page-object/cart-page.page";
+import { CheckoutPage } from "../page-object/checkout-page.page";
 
 export type PageFixtureType = {
   loginPage: LoginPage;
   basePage: BasePage;
-  bookPage: BookPage;
   profilePage: ProfilePage;
+  homePage: HomePage;
+  cartPage: CartPage;
+  checkoutPage: CheckoutPage;
 };
 
 type ExtendParams = Parameters<typeof test.extend<PageFixtureType>>;
 
 export const pageFixture: ExtendParams[0] = {
-  basePage: async ({}, use) => {
-    await use(new BasePage());
+  basePage: async ({ page }, use) => {
+    await use(new BasePage(page));
   },
-  loginPage: async ({}, use) => {
-    await use(new LoginPage());
+  loginPage: async ({ page }, use) => {
+    await use(new LoginPage(page));
   },
-  bookPage: async ({}, use) => {
-    await use(new BookPage());
+  profilePage: async ({ page }, use) => {
+    await use(new ProfilePage(page));
   },
-  profilePage: async ({}, use) => {
-    await use(new ProfilePage());
+  homePage: async ({ page }, use) => {
+    await use(new HomePage(page));
+  },
+  cartPage: async ({ page }, use) => {
+    await use(new CartPage(page));
+  },
+  checkoutPage: async ({ page }, use) => {
+    await use(new CheckoutPage(page));
   },
 };
